@@ -6,7 +6,7 @@ Sri Manika Makam
 
 ## Overview
 
-This is a beginner tutorial on creating a ROS publisher and subscriber.
+This is a beginner tutorial on creating a ROS publisher and subscriber. ROS publisher sends the messages and ROS subscriber received the messages. 
 
 ## Assumptions
 
@@ -17,6 +17,10 @@ ROS Kinetic is installed in your computer and catkin workspace is set up.
 - git clone --recursive https://github.com/manikamakam/beginner_tutorials.git
 - Suppose your catkin workspace is 'catkin_ws' which has build, src and devel folders.
 - Move the cloned folder to catkin_ws/src.
+- Open terminal and run the following commands:
+  cd ~/catkin_ws
+  source ./devel/setup.bash
+  catkin_make
 
 ```
 ## Steps to run the publisher and subscriber
