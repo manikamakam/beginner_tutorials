@@ -6,10 +6,14 @@
  *        This tutorial demonstrates simple receipt of messages over the ROS system.
  */
 
+/* 
+ * Copyright 2019 Sri Manika Makam 
+ */
+
 /*
  * The 3-Clause BSD License
  *
- * Copyright (C) 2019 Sri Manika Makam
+ * Copyright 2019 Sri Manika Makam
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,8 +39,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ros/ros.h"
-#include "std_msgs/String.h"
+#include "include/talker.h"
 
 /**
  * @brief Call back function
