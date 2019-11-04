@@ -82,9 +82,10 @@ Replace <desired_frequency> with the required number
 ## Service to change the output string
 
 User can change the output string message by running the following command in a new terminal:
-
+```
 rosservice call /changeString "text"
 
+```
 ## Logging
 
 To see the message log in real time, we use rqt_console GUI.
