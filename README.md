@@ -1,4 +1,5 @@
 # beginner_tutorials
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 ## Author
 
@@ -6,47 +7,88 @@ Sri Manika Makam
 
 ## Overview
 
-This is a beginner tutorial on creating a ROS publisher and subscriber. ROS publisher sends the messages and ROS subscriber received the messages. 
+This repository contains the implementation of basic ROS C++ Publisher and Subscriber.
+ROS publisher sends the messages and ROS subscriber received the messages.
 
-## Assumptions
+Takler (src/talker.cpp): Publisher
+Listener (src/listener.cpp): Subscriber
 
-ROS Kinetic is installed in your computer and catkin workspace is set up.
+nodes.launch is the launch file which can be used to launch both talker and listener nodes.
 
-## Standard install via command-line and set up
-```
-- git clone --recursive https://github.com/manikamakam/beginner_tutorials.git
+changeString.srv is a service used to change the output string upon request by the user.
+
+## Dependencies
+
+ROS Kinetic should be installed on your computer (preferably Ubuntu 16.04).
+Catkin workspace must be set up.
+
+## Set up and build
+
 - Suppose your catkin workspace is 'catkin_ws' which has build, src and devel folders.
+- Open new terminal and run the command 
+```
+git clone --recursive https://github.com/manikamakam/beginner_tutorials.git
+
+```
 - Move the cloned folder to catkin_ws/src.
 - Open terminal and run the following commands:
+```
   cd ~/catkin_ws
   source ./devel/setup.bash
   catkin_make
 
 ```
-## Steps to run the publisher and subscriber
-```
+## Steps to run the publisher and subscriber using rosrun
+
 - Open catkin_ws in a terminal and source your workspace's setup.sh file by running the following commands:
+```
   cd ~/catkin_ws
   source ./devel/setup.bash
-- Run the command: roscore
+  
+```
+- Run the following command to start the master
+```
+  roscore
+  
+```
 - Open new terminal and run the following commands to run the publisher:
+```
   cd ~/catkin_ws
   source ./devel/setup.bash
   rosrun beginner_tutorials talker
+
+```
 - Open new terminal and run the following commands to run the subscriber:
+```
   cd ~/catkin_ws
   source ./devel/setup.bash
   rosrun beginner_tutorials listener
 
 ```
-## License
+## Steps to run the publisher and subscriber at once using launch file
+
+Make sure thte master is running and type the following command in a new terminal:
 ```
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+roslaunch beginner_tutorials nodes.launch
 
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+```
+User can change the frequency at which the loop operates by the following command:
+```
+roslaunch begineer_tutorials nodes.launch frequency:=<desired_frequency>
 
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+```
+Replace <desired_frequency> with the required number 
 
-3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+## Service to change the output string
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+User can change the output string message by running the following command in a new terminal:
+
+rosservice call /changeString "sample text"
+
+## Logging
+
+To see the message log in real time, we use rqt_console GUI.
+Type the following command in a new terminal:
+```
+rqt_console
+````
