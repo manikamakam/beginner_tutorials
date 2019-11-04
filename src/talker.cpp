@@ -100,9 +100,9 @@ int main(int argc, char **argv) {
     ROS_WARN_STREAM("Setting the frequency to default value of 20Hz");
     // Set the frequency to default value of 20Hz
     freq = 20;
-  } else if (loopFreq == 0) {
-    ROS_FATAL_STREAM("Input frequency cannot be 0Hz");
-    ROS_WARN_STREAM("Setting to default frequency of 10Hz");
+  } else if (freq == 0) {
+    ROS_FATAL_STREAM("Frequency rate cannot be 0Hz");
+    ROS_WARN_STREAM("Setting the frequency to default value of 20Hz");
     // Set the frequency to default value of 20Hz
     freq = 20;
  }
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
    */
   auto chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
   auto server = n.advertiseService("changeString", newMessage);
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(freq);
   /**
    * A count of how many messages we have sent. This is used to create
    * a unique string for each message.
