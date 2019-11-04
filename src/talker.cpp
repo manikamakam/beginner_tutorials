@@ -39,15 +39,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  */
 
+#include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include <sstream>
 #include "beginner_tutorials/changeString.h"
 
 /**
  * Providing a default string message which can be later modified by the user
  */
-std::string defaultString = "Robotics";
+extern std::string defaultString = "Robotics";
 /**
  * @brief  Callback function for changeString Service
  * @param  req   Request data sent to service
@@ -59,7 +59,6 @@ bool newMessage(beginner_tutorials::changeString::Request &req,
   defaultString = req.inputString;
   ROS_WARN_STREAM("The user changed the string to");
   res.newString = req.inputString;
-  ROS_DEBUG_STREAM("String changed successfully");
   return true;
 }
 
@@ -85,12 +84,11 @@ int main(int argc, char **argv) {
   int freq = 20;
   if (argc > 1) {
     // Convert the string to integer
-    freq = atoi(argv[1]);
- }
+    freq = atoi(argv[1]); }
 
-  if (freq<=1000 && freq > 0) {
+  if (freq <= 1000 && freq > 0) {
     ROS_DEBUG_STREAM("Frequency rate is: "<< freq);
-  } else if(freq > 1000) {
+  } else if (freq > 1000) {
     ROS_ERROR_STREAM("Frequency rate is too large");
     ROS_WARN_STREAM("Setting the frequency to default value of 20Hz");
     // Set the frequency to default value of 20Hz
@@ -104,8 +102,7 @@ int main(int argc, char **argv) {
     ROS_FATAL_STREAM("Frequency rate cannot be 0Hz");
     ROS_WARN_STREAM("Setting the frequency to default value of 20Hz");
     // Set the frequency to default value of 20Hz
-    freq = 20;
- }
+    freq = 20; }
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
