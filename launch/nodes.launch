@@ -1,0 +1,21 @@
+<launch>
+  
+   <arg name = "frequency" default = "20" />
+
+   <node
+	pkg = "beginner_tutorials"
+        name = "publisher"
+	type = "talker"
+	output = "screen"
+	args = "$(arg frequency)"
+    />
+
+   <node
+	pkg = "beginner_tutorials"
+        name = "subscriber"
+	type = "listener"
+	output = "screen"
+	launch-prefix = "xterm -e"
+    />
+
+</launch>
