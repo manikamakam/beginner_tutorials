@@ -1,44 +1,66 @@
-/*
+/**
  * @file talker.cpp
- * @Author Sri Manika Makam
- * Created on 26 October 2019
+ * @author Sri Manika Makam
+ * @copyright BSD 3-Clause
  * @brief Implementing the publisher
- *        This tutorial demonstrates simple sending of messages over the ROS system.
+ * This demonstrates the simple sending of messages over the ROS system.
  */
 
-/* 
- * Copyright 2019 Sri Manika Makam 
- */
-
-/*
+/**
  * The 3-Clause BSD License
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *   * Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *   * Neither the names of the copyright holder nor the names of its contributors
- *     may be used to endorse or promote products derived from this software 
- *     without specific prior written permission.
+ * Copyright (c) 2019, Sri Manika Makam
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  */
 
-#include "include/talker.h"
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include <sstream>
+#include "beginner_tutorials/changeString.h"
 
+/**
+ * Providing a default string message which can be later modified by the user
+ */
+std::string defaultString = "Robotics";
+/**
+ * @brief  Callback function for changeString Service
+ * @param  req   Request data sent to service
+ * @param  res   Response by the service to the client
+ * @return bool
+ */
+bool newMessage(beginner_tutorials::changeString::Request &req,
+                   beginner_tutorials::changeString::Response &res) {
+  defaultString = req.inputString;
+  ROS_INFO_STREAM("The user changed the string to");
+  res.newString = req.inputString;
+  return true;
+}
 /**
  * @brief main function
  * @param integer (argc) and character (argv) 
@@ -80,6 +102,7 @@ int main(int argc, char **argv) {
    * buffer up before throwing some away.
    */
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+  auto server = n.advertiseService("changeString", newMessage);
   ros::Rate loop_rate(10);
   /**
    * A count of how many messages we have sent. This is used to create
@@ -92,7 +115,7 @@ int main(int argc, char **argv) {
      */
     std_msgs::String msg;
     std::stringstream ss;
-    ss << "UMD College Park " << count;
+    ss << defaultString << count;
     msg.data = ss.str();
     ROS_INFO("%s", msg.data.c_str());
     /**
