@@ -57,10 +57,12 @@ std::string defaultString = "Robotics";
 bool newMessage(beginner_tutorials::changeString::Request &req,
                    beginner_tutorials::changeString::Response &res) {
   defaultString = req.inputString;
-  ROS_INFO_STREAM("The user changed the string to");
+  ROS_WARN_STREAM("The user changed the string to");
   res.newString = req.inputString;
+  ROS_DEBUG_STREAM("String changed successfully");
   return true;
 }
+
 /**
  * @brief main function
  * @param integer (argc) and character (argv) 
@@ -78,6 +80,33 @@ int main(int argc, char **argv) {
    * part of the ROS system.
    */
   ros::init(argc, argv, "talker");
+
+  // Set the default frequency to 20Hz
+  int freq = 20;
+  if (argc > 1) {
+    // Convert the string to integer
+    freq = atoi(argv[1]);
+ }
+
+  if (freq<=1000 && freq > 0) {
+    ROS_DEBUG_STREAM("Frequency rate is: "<< freq);
+  } else if(freq > 1000) {
+    ROS_ERROR_STREAM("Frequency rate is too large");
+    ROS_WARN_STREAM("Setting the frequency to default value of 20Hz");
+    // Set the frequency to default value of 20Hz
+    freq = 20;
+  } else if (freq < 0) {
+    ROS_ERROR_STREAM("Frequency rate cannot be negative");
+    ROS_WARN_STREAM("Setting the frequency to default value of 20Hz");
+    // Set the frequency to default value of 20Hz
+    freq = 20;
+  } else if (loopFreq == 0) {
+    ROS_FATAL_STREAM("Input frequency cannot be 0Hz");
+    ROS_WARN_STREAM("Setting to default frequency of 10Hz");
+    // Set the frequency to default value of 20Hz
+    freq = 20;
+ }
+
   /**
    * NodeHandle is the main access point to communications with the ROS system.
    * The first NodeHandle constructed will fully initialize this node, and the last
@@ -101,7 +130,7 @@ int main(int argc, char **argv) {
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-  ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+  auto chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
   auto server = n.advertiseService("changeString", newMessage);
   ros::Rate loop_rate(10);
   /**
