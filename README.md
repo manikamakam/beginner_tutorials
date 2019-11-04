@@ -8,9 +8,9 @@ Sri Manika Makam
 ## Overview
 
 This repository contains the implementation of basic ROS C++ Publisher and Subscriber.
-ROS publisher sends the messages and ROS subscriber received the messages.
+ROS publisher sends the messages and ROS subscriber receives the messages.
 
-Takler (src/talker.cpp): Publisher
+Talker (src/talker.cpp): Publisher
 Listener (src/listener.cpp): Subscriber
 
 nodes.launch is the launch file which can be used to launch both talker and listener nodes.
@@ -74,7 +74,7 @@ roslaunch beginner_tutorials nodes.launch
 ```
 User can change the frequency at which the loop operates by the following command:
 ```
-roslaunch begineer_tutorials nodes.launch frequency:=<desired_frequency>
+roslaunch beginner_tutorials nodes.launch frequency:=<desired_frequency>
 
 ```
 Replace <desired_frequency> with the required number 
@@ -83,7 +83,7 @@ Replace <desired_frequency> with the required number
 
 User can change the output string message by running the following command in a new terminal:
 
-rosservice call /changeString "sample text"
+rosservice call /changeString "text"
 
 ## Logging
 
@@ -91,4 +91,4 @@ To see the message log in real time, we use rqt_console GUI.
 Type the following command in a new terminal:
 ```
 rqt_console
-````
+```
