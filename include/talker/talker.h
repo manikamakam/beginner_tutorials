@@ -42,8 +42,8 @@
 #define TALKER
 
 #include <iostream>
-#include <sstream>
 #include <string>
+#include <sstream>
 
 /**
  * Structure to store the default display message 
