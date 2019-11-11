@@ -93,3 +93,57 @@ Type the following command in a new terminal:
 ```
 rqt_console
 ```
+## Inspecting TF Frames
+
+The talker.cpp publishes /tf topic of /talk frame with respect to the /world frame.
+
+To visualize the topics being produced type the following in a new terminal:
+```
+cd ~/catkin_ws
+rosrun rqt_tf_tree rqt_tf_tree
+
+```
+To echo the values type the following in a new terminal:
+```
+cd ~/catkin_ws
+rosrun tf tf_echo /world /talk
+
+```
+Type the following in the new terminal, while running the demo:
+```
+cd ~/catkin_ws
+rosrun tf view_frames
+
+```
+Above command will produce a pdf file which has been attached in the results folder
+
+# Recording all topics and creating a bag file with launch file
+
+roslaunch beginner_tutorials nodes.launch rosbagEnable:=true
+
+## Playing bag files
+
+A recorded ros bag file has been attached in the results folder. To play the ros bag file type the following commands:
+
+In a new terminal
+
+```
+roscore
+
+```
+Open another new terminal
+
+```
+cd ~/catkin_ws
+rosrun beginner_tutorials listener
+
+```
+In an another new terminal
+
+```
+cd ~/catkin_ws/src/beginner_tutorials/results
+rosbag play rostopicsRecord.bag
+
+```
+The /chatter messages that have been recorded can be viewed.
+
