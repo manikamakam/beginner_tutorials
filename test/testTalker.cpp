@@ -53,7 +53,8 @@ TEST(testTalker, testExistence) {
   // Create the node handle
   ros::NodeHandle n;
   // Register a client to the changeString service
-  auto client = n.serviceClient<beginner_tutorials::changeString>("changeString");
+  auto client = n.serviceClient
+                     <beginner_tutorials::changeString>("changeString");
   // Tetss if the service exists or not
   EXPECT_TRUE(client.waitForExistence(ros::Duration(5)));
 }
@@ -67,14 +68,15 @@ TEST(testTalker, testModifyMessage) {
   // Create the node handle
   ros::NodeHandle n;
   // Register a client to the changeString service
-  auto client = n.serviceClient<beginner_tutorials::changeString>("changeString");
+  auto client = n.serviceClient
+                     <beginner_tutorials::changeString>("changeString");
   // Initialize the service to srv object
   beginner_tutorials::changeString srv;
   // Modify the input string
   srv.request.inputString = "test";
   // Calling the client
   client.call(srv.request, srv.response);
-  // Tests to see if the string is modified or not 
+  // Tests to see if the string is modified or not
   EXPECT_STREQ("test", srv.response.newString.c_str());
 }
 

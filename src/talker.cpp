@@ -74,7 +74,8 @@ void tfPoseCall() {
   tf::Transform transform;
 
   // Set translation value
-  transform.setOrigin(tf::Vector3(cos(ros::Time::now().toSec()), sin(ros::Time::now().toSec()), 0.0));
+  transform.setOrigin(tf::Vector3(cos(ros::Time::now().toSec()),
+                         sin(ros::Time::now().toSec()), 0.0));
   tf::Quaternion q;
   q.setRPY(1, 1, 0);
 
@@ -82,7 +83,8 @@ void tfPoseCall() {
   transform.setRotation(q);
 
   // Broadcast the transform
-  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+  br.sendTransform(tf::StampedTransform(transform,
+                         ros::Time::now(), "world", "talk"));
 }
 
 /**
