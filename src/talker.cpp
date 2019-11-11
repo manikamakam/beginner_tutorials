@@ -2,8 +2,7 @@
  * @file talker.cpp
  * @author Sri Manika Makam
  * @copyright BSD 3-Clause
- * @brief Implementing the publisher
- * This demonstrates the simple sending of messages over the ROS system.
+ * @brief Implementing the ROS publisher
  */
 
 /**
@@ -39,7 +38,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  */
 
-#include <sstream>
+#include <tf/transform_broadcaster.h>
+#include "talker/talker.h"
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/changeString.h"
@@ -47,7 +47,8 @@
 /**
  * Providing a default string message which can be later modified by the user
  */
-extern std::string defaultString = "Robotics";
+DefaultString def;
+
 /**
  * @brief  Callback function for changeString Service
  * @param  req   Request data sent to service
@@ -56,10 +57,32 @@ extern std::string defaultString = "Robotics";
  */
 bool newMessage(beginner_tutorials::changeString::Request &req,
                    beginner_tutorials::changeString::Response &res) {
-  defaultString = req.inputString;
+  def.defaultString = req.inputString;
   ROS_WARN_STREAM("The user changed the string to");
   res.newString = req.inputString;
   return true;
+}
+
+/**
+ * @brief  Callback function for tf broadcaster
+ * @param  none
+ * @return none
+ */
+void tfPoseCall() {
+  // Transform broadcaster object
+  static tf::TransformBroadcaster br;
+  tf::Transform transform;
+
+  // Set translation value
+  transform.setOrigin(tf::Vector3(cos(ros::Time::now().toSec()), sin(ros::Time::now().toSec()), 0.0));
+  tf::Quaternion q;
+  q.setRPY(1, 1, 0);
+
+  // Set rotation value
+  transform.setRotation(q);
+
+  // Broadcast the transform
+  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
 }
 
 /**
@@ -110,6 +133,7 @@ int main(int argc, char **argv) {
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle n;
+
   /**
    * The advertise() function is how you tell ROS that you want to
    * publish on a given topic name. This invokes a call to the ROS
@@ -130,6 +154,7 @@ int main(int argc, char **argv) {
   auto chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
   auto server = n.advertiseService("changeString", newMessage);
   ros::Rate loop_rate(freq);
+
   /**
    * A count of how many messages we have sent. This is used to create
    * a unique string for each message.
@@ -141,9 +166,10 @@ int main(int argc, char **argv) {
      */
     std_msgs::String msg;
     std::stringstream ss;
-    ss << defaultString << count;
+    ss << def.defaultString << count;
     msg.data = ss.str();
     ROS_INFO("%s", msg.data.c_str());
+
     /**
      * The publish() function is how you send messages. The parameter
      * is the message object. The type of this object must agree with the type
@@ -151,6 +177,10 @@ int main(int argc, char **argv) {
      * in the constructor above.
      */
     chatter_pub.publish(msg);
+
+    // Calling the tfPoseCall function
+    tfPoseCall();
+
     ros::spinOnce();
     loop_rate.sleep();
     ++count;
